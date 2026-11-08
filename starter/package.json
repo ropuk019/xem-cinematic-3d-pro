@@ -1,0 +1,30 @@
+{
+  "name": "xem-cinematic-3d-starter",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "render:product": "remotion render src/index.ts ProductFilm out/product-film.mp4",
+    "render:jelly": "remotion render src/index.ts JellyTitle out/jelly-title.mp4",
+    "render:vertical": "remotion render src/index.ts VerticalAd out/vertical-ad.mp4",
+    "still:product": "remotion still src/index.ts ProductFilm out/product-still.png --frame=75",
+    "check": "tsc --noEmit",
+    "postinstall": "node scripts/copy-font.js"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.329",
+    "@remotion/three": "4.0.329",
+    "remotion": "4.0.329",
+    "@react-three/fiber": "8.18.0",
+    "three": "0.174.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "@react-three/drei": "9.120.8"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.18",
+    "@types/three": "0.174.0",
+    "typescript": "5.7.3"
+  }
+}
