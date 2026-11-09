@@ -1,6 +1,6 @@
 # XEM CINEMATIC 3D
 
-A self-authored, cross-platform cinematic 3D skill pack for **Claude Code + OpenCode**. It combines a reusable agent workflow with a working Remotion + React Three Fiber starter.
+A self-authored, cross-platform **code-first cinematic production system** for **Claude Code + OpenCode**. It combines a procedural Blender/Cycles production path, a Remotion + React Three Fiber starter, render automation, and visual-QA guidance.
 
 This is an independent implementation inspired by publicly described cinematic 3D workflows. It is **not** the seller's paid source code and does not contain proprietary assets.
 
@@ -9,7 +9,8 @@ This is an independent implementation inspired by publicly described cinematic 3
 - `SKILL.md`: end-to-end art direction, scene construction, rendering, and QC workflow.
 - `references/`: practical cinematography, camera, lighting, material, animation, typography, rendering, and QC notes.
 - `starter/`: runnable Remotion + React Three Fiber project.
-- `scripts/`: environment checks, project bootstrap, preview-frame extraction, and render helpers.
+- `scripts/`: environment checks, project bootstrap, preview-frame extraction, Blender frame rendering and FFmpeg encoding.
+- `references/code-first-photorealism.md`: procedural modeling, physical light, macro optics and render iteration playbook.
 - `examples/`: five scene briefs with implementation notes.
 - `PROMPTS.md`: 30 production prompts.
 
@@ -21,7 +22,7 @@ This is an independent implementation inspired by publicly described cinematic 3
 - A Chromium-compatible browser installed by Remotion (the CLI can download its supported browser).
 - For GPU acceleration, a working graphics driver. Software rendering may work but can be slow.
 
-No paid API key is required. Rendering is local. Three-dimensional scenes run in Chromium/WebGL; performance depends on the device and driver.
+No paid API key is required. Rendering is local. Blender Cycles is the photorealistic path; Three.js/Remotion is useful for interactive scenes and motion-graphics assembly. Render speed depends heavily on CPU, GPU, VRAM, samples and scene complexity.
 
 ## Quick start
 
@@ -44,6 +45,33 @@ npm run render:vertical
 Output files are written to `starter/out/`.
 
 If Remotion asks to install its browser, allow it. On Linux, if Chromium reports missing system libraries, install the packages requested by the error message. On Ubuntu/Debian, common dependencies include `libnss3`, `libatk1.0-0`, `libatk-bridge2.0-0`, `libx11-xcb1`, `libxcomposite1`, `libxdamage1`, `libxrandr2`, `libgbm1`, `libasound2`, and `libgtk-3-0` (package names can vary by release).
+
+
+## Code-first photorealistic commercial
+
+The Reality Engine scene below generates its room, desk, laptop, keyboard, screen typography, blinds, coffee cup, notebook, camera lens, materials, lighting and animation through Blender Python. It does not use stock footage or downloaded scene models.
+
+Preview (CPU-compatible; lower resolution and samples):
+
+```bash
+python scripts/render_blender.py \
+  --scene blender/scenes/venetian_lens_commercial.py \
+  --output out/venetian-preview.mp4 \
+  --engine CYCLES --device CPU --samples 24 \
+  --resolution 1920x1080 --scale 45 --fps 30 --duration 15
+```
+
+Final render after confirming GPU support in Blender (otherwise use `--device CPU`):
+
+```bash
+python scripts/render_blender.py \
+  --scene blender/scenes/venetian_lens_commercial.py \
+  --output out/venetian-lens-commercial.mp4 \
+  --engine CYCLES --device GPU --samples 128 \
+  --resolution 1920x1080 --scale 100 --fps 30 --duration 15
+```
+
+Add `--keep-frames` to preserve the PNG sequence. The first render should be a preview; inspect frames and correct the scene before a full-resolution final render. Blender and FFmpeg must be installed locally.
 
 ## Use as a Claude Code skill
 

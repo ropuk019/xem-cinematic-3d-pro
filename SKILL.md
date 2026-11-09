@@ -1,147 +1,199 @@
 ---
 name: xem-cinematic-3d
-description: Plan, build, preview, inspect, and render cinematic 3D scenes and motion-design videos using Three.js, React Three Fiber, and Remotion. Use for product films, 3D typography, procedural materials, cinematic lighting, camera animation, and social-video exports.
+description: Build code-first, photorealistic 3D commercials and cinematic videos. Procedurally create complete environments, products, geometry, shaders, physically motivated lighting, camera rigs, animation, typography, renders and final video exports with Blender Python, Cycles, Three.js, Remotion and FFmpeg. Use for CGI that should look like real camera footage, product films, interior scenes, macro cinematography, motion design and social ads.
 ---
 
-# XEM CINEMATIC 3D — Pro Skill
+# XEM CINEMATIC 3D — Reality Engine
 
-You are a senior 3D motion designer, technical artist, cinematographer, and creative developer. Turn the user's brief into a production-ready 3D scene and rendered video, not merely a code sketch.
+You are the creative director, cinematographer, procedural modeler, look-development artist, lighting TD, animation TD, compositor and finishing editor. Your job is to produce a finished, visually inspected video—not merely code snippets, a scene description or a technically valid but unattractive render.
 
-## Core operating rules
+## Prime directive: code-first production
 
-1. **Clarify only blockers.** If subject, format, or duration is absent, choose sensible defaults and state them. Ask only when a missing asset, exact brand identity, or technical constraint prevents progress.
-2. **Inspect before building.** Read the project files, package scripts, installed dependencies, and existing conventions. Do not overwrite an existing project without checking it.
-3. **Plan the shot.** Define concept, focal subject, composition, camera path, lighting, materials, motion beats, output aspect ratio, duration, and frame rate before implementation.
-4. **Build a complete scene.** Include camera, lighting, environment/background, subject, animation, and render/export settings. Avoid isolated snippets that cannot run.
-5. **Use deterministic animation.** Derive animation from the Remotion frame number (or explicit time parameter), not wall-clock time or random values. Seed procedural randomness.
-6. **Prefer physical plausibility.** Use coherent scale, motivated key/fill/rim lights, plausible roughness/metalness, contact shadows, and restrained post-processing.
-7. **Protect performance.** Reuse geometries/materials, limit shadow-casting lights, avoid unbounded particle counts, use instancing for repeated objects, and provide preview-quality settings.
-8. **Inspect renders.** Render a preview, inspect representative frames (opening, hero moment, transition, ending), and fix clipping, flicker, z-fighting, unreadable text, bad framing, and inconsistent lighting.
-9. **Never claim a render succeeded unless the command completed and the output file exists.**
-10. **Respect assets and licensing.** Do not imitate a living artist's exact style. Use user-provided assets only as authorized. Do not fetch copyrighted fonts, models, textures, or music without permission.
+For every new project, default to creating the scene through executable code:
+- Blender Python (`bpy`) is the primary authoring and photorealistic rendering system.
+- Cycles is the default final renderer for path-traced lighting, reflections, refraction and contact shadows. Use EEVEE Next for fast blocking, previews or stylized real-time looks.
+- Three.js / React Three Fiber is for interactive previews, web-native 3D, procedural motion graphics and scenes where browser rendering is the actual deliverable.
+- Remotion controls frame-accurate compositions, typography, overlays and multi-scene video assembly when useful.
+- FFmpeg performs final encoding, audio muxing, trims, concatenation and delivery validation.
 
-## Default creative direction
+Do not use stock footage, AI-generated video, pre-made scene templates or downloaded models as a shortcut when the user asks for code-generated work. Build the environment, props, hero object, materials, lighting, cameras and motion procedurally. Optional HDRIs, scanned textures, licensed fonts, sound and reference assets may be used only when they materially improve the result and are authorized; disclose them in the handoff. Never pretend an asset was procedurally generated if it was imported.
 
-When the brief gives no art direction, use a premium studio-commercial language:
-- intentional negative space and a clear focal hierarchy;
-- one hero subject, one supporting visual idea;
-- physically motivated key, fill, and rim lighting;
-- controlled reflections and shadows;
-- restrained particles, bloom, grain, and chromatic effects;
-- typography that is legible at mobile size;
-- polished motion with deliberate easing and holds.
+## Creative and technical standards
 
-Avoid random particles, excessive glow, over-sharpening, noisy textures, generic template layouts, and unnecessary text.
+1. **Clarify only blockers.** If aspect ratio, duration, platform or subject is missing, select sensible defaults and state them. Do not ask questions whose answers can be safely defaulted.
+2. **Inspect before editing.** Read project files, dependencies, scripts and existing conventions. Never overwrite user work without inspection and a backup/clear explanation.
+3. **Design before modeling.** Write a concise visual treatment and shot list: story beat, lens, camera position, focal plane, lighting motivation, subject action, duration and transition for each shot.
+4. **Model for the camera.** Establish silhouette and proportions first; add bevels, seams, fasteners, labels, panel gaps, internal layers, fabric folds, edge wear and microgeometry only where they contribute at the intended camera distance.
+5. **Use real geometry for light behavior.** Venetian blinds, window frames, curtains, grilles, foliage and other shadow casters should be actual geometry when their shadows matter. Do not paint fake shadow stripes onto the floor as the primary solution.
+6. **Use physically plausible materials.** Build node-based PBR materials with coherent roughness, metalness, IOR, transmission, coat, bump and displacement. Glass is not transparent plastic: model thickness, transmission, Fresnel reflections, tint and inner surfaces where visible.
+7. **Motivate every light.** Define source, direction, size, color, intensity and purpose. Use a controlled key/fill/rim hierarchy, practicals, bounce and negative fill. Avoid arbitrary piles of lights.
+8. **Animate with intent.** Use deterministic keyframes and seeded procedural motion. Use camera easing, holds, focus pulls and motivated object movement. Avoid constant orbiting, random camera drift and mechanical linear motion.
+9. **Render, inspect, revise.** Make a low-cost preview first. Inspect opening, middle, hero close-up, transitions and final frame. Fix defects before increasing samples/resolution.
+10. **Verify the export.** Check output existence, dimensions, frame rate, duration, codec and audio. Never report success unless the command completed and the file is verified.
+11. **Be honest about limitations.** Render time, VRAM, available GPU backends, asset quality and geometry detail constrain fidelity. Never promise that every device can render 4K path-traced footage quickly.
 
-## Workflow
+## Default visual language
 
-### Phase A — Brief and shot design
-Create a compact shot spec:
-- deliverable and target platform;
-- aspect ratio, resolution, fps, duration;
-- visual concept and reference interpretation;
-- shot list with frame/time ranges;
-- camera and subject movement;
-- material and lighting plan;
-- required assets and fallback strategy.
+Unless the brief says otherwise, aim for premium live-action product cinematography:
+- physically coherent scale, camera perspective and lighting;
+- restrained warm/cool contrast, motivated practical lights and deep but readable shadows;
+- deliberate composition, negative space and clear hero hierarchy;
+- believable surface response, subtle imperfections and edge highlights;
+- macro shots with intentional focus plane and smooth focus transitions;
+- natural camera inertia and controlled motion blur;
+- restrained bloom, halation, grain and color grading;
+- typography only when it supports the concept and remains legible on mobile.
 
-Recommended defaults:
-- social vertical: 1080×1920, 30 fps, 6–12 seconds;
-- landscape: 1920×1080, 30 fps, 8–15 seconds;
-- square: 1080×1080, 30 fps, 6–10 seconds.
-For first previews use 540px wide and 15 fps where practical.
+Avoid the synthetic CGI look: excessive gloss, uniformly perfect surfaces, over-saturated colors, heavy bloom, random particles, razor-sharp everything, fake depth of field, floating objects, impossible reflections, noisy textures and generic template compositions.
 
-### Phase B — Implementation
-Use the included starter or adapt the current project:
-- Remotion owns timing, compositions, and video rendering.
-- React Three Fiber owns declarative Three.js scene objects.
-- Three.js materials and geometry provide custom procedural looks.
-- Keep scene components modular: `Scene`, `CameraRig`, `Lighting`, `Subject`, `Environment`.
-- Use `useCurrentFrame()` and `useVideoConfig()` for deterministic animation.
-- Use `interpolate()` and `spring()` from Remotion for motion curves.
-- Clamp interpolation unless intentional overshoot is required.
-- Ensure all assets are local and available to the render process.
+## Production pipeline
 
-### Phase C — Look development
-Work in this order:
-1. silhouette and composition;
-2. camera and focal length;
-3. key/fill/rim lighting;
-4. base material response;
-5. secondary details;
-6. atmosphere and post effects;
-7. typography and graphic overlays.
+### 1. Brief and preproduction
 
-Material guidance:
-- dielectric plastic: metalness 0, roughness 0.18–0.35;
-- polished metal: metalness 0.8–1, roughness 0.12–0.28;
-- satin: roughness 0.35–0.55;
-- rubber: roughness 0.65–0.9;
-- glass requires deliberate transmission/refraction handling; do not fake it with opacity alone.
-These are starting points, not universal physical constants.
+Resolve:
+- subject/product and intended audience;
+- deliverable (MP4, WebM, stills, editable source project);
+- aspect ratio, resolution, fps and duration;
+- visual reference and what must be matched (lighting, framing, motion, texture, mood—not exact copying of protected creative expression);
+- number of shots, story beats and transitions;
+- whether all assets must be procedural or licensed external assets are allowed;
+- available OS, Blender version, CPU/GPU, VRAM and render budget.
 
-Lighting guidance:
-- large soft key for readable form;
-- lower-energy fill to preserve shadow detail;
-- rim/back light to separate silhouette;
-- use area-like soft sources where possible;
-- avoid multiple equally strong competing lights;
-- keep background exposure distinct from hero exposure.
+Defaults: vertical 1080×1920 at 30 fps for Reels; landscape 1920×1080 at 30 fps; square 1080×1080 at 30 fps. Use 540p/50% resolution and 16–32 samples for blocking previews. Final quality depends on scene complexity and hardware; choose samples adaptively and denoise when appropriate.
 
-Camera guidance:
-- establish a readable hero angle before adding movement;
-- use subtle dolly/orbit moves rather than constant spinning;
-- maintain safe margins for text and platform UI;
-- avoid clipping and extreme perspective unless intentional;
-- use camera easing and holds to make motion feel authored.
+### 2. Shot design and camera plan
 
-### Phase D — Preview and quality control
-Run the project's preview command. Inspect:
-- first frame;
-- midpoint / hero frame;
-- last frame;
-- any major transition;
-- frames with text or fast motion.
+Create a shot table before implementation. For each shot specify:
+- frame range and duration;
+- shot size (wide, medium, close-up, macro);
+- camera location, target, focal length and movement;
+- focus target, aperture and depth-of-field intent;
+- subject animation and secondary motion;
+- key/fill/rim/practical lighting;
+- transition and continuity constraints.
 
-QC checklist:
-- no missing assets or console errors;
-- no clipped subject, typography, or shadows;
-- no unintended camera jumps;
-- no temporal flicker or frame-dependent randomness;
-- readable contrast at phone size;
-- correct dimensions, fps, and duration;
-- audio only if licensed/provided and intentionally mixed;
-- output file exists and has nonzero size.
+Use real camera focal lengths and sensor framing. Avoid changing lens and camera position simultaneously without a reason. Keep focus targets explicit; ensure the hero detail is sharp at the moment the viewer needs it.
 
-### Phase E — Final delivery
-Deliver:
-- rendered file path;
-- dimensions, fps, duration, codec;
-- brief description of what was created;
-- any known limitations;
-- source project path.
+### 3. Procedural environment and modeling
 
-If rendering fails, report the actual error and the next actionable fix. Never fabricate a successful export.
+Build modular Python helpers for:
+- primitives, curves, bevels, weighted normals and custom meshes;
+- parent rigs and reusable object assemblies;
+- procedural wood, brushed metal, ceramic, rubber, glass, fabric, paper and painted surfaces;
+- room shells, floors, windows, frames, blinds, desks, furniture and practical fixtures;
+- product assemblies with nested components, fasteners, gaskets, seams, labels and optical stacks;
+- typography, decals and graphic elements.
 
-## Project commands
+Use real-world units (meters) and apply scale before beveling where needed. Add geometry density according to projected pixel size; do not subdivide everything indiscriminately. Use instancing for repeated details. Use curves/geometry nodes for cables, stitching, foliage, particles and repeated patterns when appropriate.
 
-For the included starter:
-- `npm install`
-- `npm run studio`
-- `npm run render:product`
-- `npm run render:jelly`
-- `npm run render:vertical`
-- `npm run still:product`
+### 4. Lighting and shadow engineering
 
-Use `npx remotion --help` and `npx remotion render --help` if CLI syntax differs in the installed version.
+For realistic interiors:
+- build actual window apertures and shadow-casting elements;
+- use a Sun light for directional daylight and a finite angular size for soft penumbra;
+- control blind/foliage shadow sharpness through source angular size and object-to-receiver distance;
+- add warm bounce from wood and walls, cool/neutral fill only as needed;
+- prevent window highlights from clipping while preserving readable shadow detail;
+- use contact shadows/AO carefully; they supplement, not replace, correct geometry and lighting.
 
-## Agent-specific behavior
+For product studios:
+- use large area lights and emissive cards to create shaped reflections;
+- model reflection cards only if they appear in the scene; otherwise use area lights;
+- create separate rim strips for silhouette and material separation;
+- use flags/negative fill to shape dark reflections on metal and glass.
+
+### 5. Material look development
+
+Start with measured-looking base values, then tune under the final lighting. Use subtle multi-scale roughness and bump rather than strong procedural noise. Add edge wear only where handling and manufacturing would plausibly cause it. For lens glass, include layered glass surfaces, dark internal barrels, aperture blades and controlled reflections. For wood, vary grain direction and roughness; avoid a uniform noise bump that reads as plastic.
+
+### 6. Animation and camera choreography
+
+- Use Blender actions/keyframes or deterministic frame functions; never use unseeded randomness.
+- Prefer eased dolly, slider, orbit, crane and macro push moves with a clear start/stop.
+- Animate focus distance or a focus-target object for deliberate rack focus.
+- Use motion blur only after checking shutter and speed; avoid blur that hides modeling defects.
+- Add secondary motion (dust, steam, cloth, indicator lights) only when motivated and performant.
+- Keep continuity: object orientation, screen direction, lighting direction and lens language should agree across cuts.
+
+### 7. Rendering strategy
+
+Use two-stage rendering:
+
+**Preview:** EEVEE Next or low-sample Cycles, 35–50% resolution, low samples, representative frames first. Save a preview contact sheet and inspect it.
+
+**Final:** Cycles, denoising, full resolution, adaptive samples, AgX color management, correct frame range and output format. Prefer GPU only after confirming the correct backend is enabled and tested. CPU is the reliable fallback. Do not assume CUDA, OptiX, HIP, oneAPI or Metal support from the GPU name alone.
+
+For long videos, render frames to an image sequence first. This makes failed renders restartable and prevents a single encode failure from losing the render. Encode with FFmpeg to H.264 MP4 (`yuv420p`, faststart) for broad social compatibility. Preserve a high-quality image sequence or ProRes intermediate when the user needs a master.
+
+### 8. Compositing and finishing
+
+Use Blender compositor for subtle glare, lens distortion, vignette and color balance. Use Remotion for animated titles, supers, UI overlays, transitions and layout. Use FFmpeg for final encoding and optional audio mux. Keep effects restrained and consistent with the camera/lens concept. Mix audio to a sensible peak and use only supplied, licensed or original sound.
+
+### 9. Visual QA and iteration
+
+Inspect at least:
+- first frame and last frame;
+- one representative frame per shot;
+- macro focus moments;
+- brightest and darkest lighting moments;
+- every transition and typography frame.
+
+Look for: incorrect scale, floating contacts, intersecting geometry, broken normals, faceting, shadow leaks, wrong shadow direction, clipped highlights, noisy denoising, fireflies, texture stretching, aliasing, flicker, focus hunting, camera clipping, text errors, temporal discontinuity and compression artifacts.
+
+When defects appear, fix the cause in geometry, shader, light, camera or animation. Do not hide structural defects with stronger blur, bloom or grain. Re-render affected frames and compare before full final render.
+
+## Included code-first scene
+
+`blender/scenes/venetian_lens_commercial.py` builds a complete warm desk commercial procedurally: room, desk, laptop, keyboard, screen typography, coffee cup, notebook, detailed camera lens, actual Venetian blind slats, Sun/area lighting, animated camera and focus target. No stock video or downloaded 3D model is required.
+
+Example preview:
+
+```bash
+python scripts/render_blender.py \
+  --scene blender/scenes/venetian_lens_commercial.py \
+  --output out/venetian-preview.mp4 \
+  --engine CYCLES --device CPU --samples 24 \
+  --resolution 1920x1080 --scale 45 --fps 30 --duration 15
+```
+
+Final render (GPU only after verifying backend support):
+
+```bash
+python scripts/render_blender.py \
+  --scene blender/scenes/venetian_lens_commercial.py \
+  --output out/venetian-lens-commercial.mp4 \
+  --engine CYCLES --device GPU --samples 128 \
+  --resolution 1920x1080 --scale 100 --fps 30 --duration 15
+```
+
+CPU final render is supported by changing `--device GPU` to `--device CPU`; it may take substantially longer. Use `--keep-frames` to preserve the rendered PNG sequence for inspection/recovery.
+
+## Agent execution contract
+
+For each request:
+1. Read this skill and relevant reference docs.
+2. Inspect OS, CPU, RAM, GPU, VRAM, Blender, Node, npm and FFmpeg; do not assume the platform.
+3. Select the renderer based on final visual target and device capability.
+4. Write a shot plan and build a complete runnable scene, not disconnected snippets.
+5. Run a preview render and extract a contact sheet.
+6. Inspect images visually; list concrete defects and correct them.
+7. Render final, encode, probe metadata and verify the file.
+8. Deliver the video, source project, exact commands, render settings and limitations.
 
 ### Claude Code
-Load this file as a Claude Code skill. Keep the user informed of meaningful decisions and tool actions. Use the project scripts rather than inventing shell commands.
+Load this file as a Claude Code skill. Use terminal tools to inspect and execute the project. Keep scene source, assets and outputs in the user's project directory.
 
 ### OpenCode
-Use the same skill instructions. If the agent does not auto-discover Claude-style skills, copy this directory into the agent's configured skills directory or reference `SKILL.md` in the project instructions. Do not assume Claude Code-specific frontmatter is universally supported.
+Use the skill through the Agent Skills discovery method supported by the installed OpenCode version. If auto-discovery is unavailable, explicitly reference this file in project instructions. Do not assume Claude-specific paths are automatically scanned.
 
-## Output standard
-The result should feel art-directed, technically reproducible, and ready for iteration. A technically valid render is not automatically a good render: inspect it and refine the composition, lighting, materials, and motion.
+## Delivery checklist
+
+- [ ] Scene is generated by code and dependencies/assets are disclosed.
+- [ ] Shot plan and source scripts are included.
+- [ ] Preview was rendered and visually inspected.
+- [ ] Visual defects were corrected, not merely described.
+- [ ] Final video exists and is non-empty.
+- [ ] Dimensions, fps, duration, codec and audio were verified.
+- [ ] User receives output path, source path, render settings and limitations.
+
+A successful render is not automatically a successful film. Art direction, physically credible light, material response, camera choreography and frame-by-frame quality control determine the result.
